@@ -1,0 +1,72 @@
+{
+  "name": "Hogwarts Curriculum",
+  "version": 1,
+  "courses": [
+    {
+      "id": 1,
+      "details": {
+        "link": "https://hogwarts.edu/courses/potions",
+        "slug": "potions",
+        "name": "Potions",
+        "category": "Magical Disciplines",
+        "sections": [
+          {
+            "id": 1,
+            "details": {
+              "slug": "basic-potions",
+              "name": "Basic Potions",
+              "status": "not_started"
+            }
+          },
+          {
+            "id": 2,
+            "details": {
+              "slug": "advanced-potions",
+              "name": "Advanced Potions",
+              "status": "not_started"
+            }
+          }
+        ],
+        "version": "1.0",
+        "prerequisites": [],
+        "topics": ["Potion Brewing", "Magical Theory"],
+        "notes": "Remember, always stir clockwise!",
+        "discussionLink": "https://hogwarts.edu/courses/potions/discussions",
+        "status": "not_started"
+      }
+    },
+    {
+      "id": 2,
+      "details": {
+        "link": "https://hogwarts.edu/courses/defense-against-dark-arts",
+        "slug": "defense-against-dark-arts",
+        "name": "Defense Against the Dark Arts",
+        "category": "Magical Disciplines",
+        "sections": [
+          {
+            "id": 3,
+            "details": {
+              "slug": "basic-defense",
+              "name": "Basic Defense Techniques",
+              "status": "not_started"
+            }
+          },
+          {
+            "id": 4,
+            "details": {
+              "slug": "advanced-defense",
+              "name": "Advanced Defense Techniques",
+              "status": "not_started"
+            }
+          }
+        ],
+        "version": "1.0",
+        "prerequisites": [1],
+        "topics": ["Defensive Spells", "Counter Curses", "Dark Creatures"],
+        "notes": "Always be vigilant!",
+        "discussionLink": "https://hogwarts.edu/courses/defense-against-dark-arts/discussions",
+        "status": "not_started"
+      }
+    }
+  ]
+}

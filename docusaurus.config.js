@@ -38,7 +38,8 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./courseSidebar.js'),
+          routeBasePath: '/',
+          sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
@@ -58,6 +59,7 @@ const config = {
     ],
   ],
 
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -71,12 +73,13 @@ const config = {
         },
         items: [
           {
-            type: 'docSidebar',
-            sidebarId: 'someSidebar',
-            position: 'left',
-            label: 'Hogwarts',
+            type: 'doc',
+            docId: 'intro',
+            position: 'left', // or wherever you want the link to appear
+            label: 'Curriculum',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          {to: '/progress', label: 'Progress', position: 'left'},
+          {to: '/ai-tutor', label: 'AI Tutor', position: 'left'},
           {
             href: 'https://github.com/facebook/docusaurus',
             label: 'GitHub',
@@ -134,6 +137,7 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
+
 };
 
 module.exports = config;

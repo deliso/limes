@@ -1,76 +1,79 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-let sidebar = {
-  someSidebar: {
-    'Hogwarts': {}
-  }
-};
+// Read the courses JSON file
+const coursesData = require("./curriculum.json");
 
-function getCourses(directory, filelist = []) {
-  fs.readdirSync(directory).forEach(file => {
-    const absolutePath = path.join(directory, file);
+coursesData.courses.forEach((course) => {
+  course.details.sections.forEach((section) => {
+    // Construct the content of the markdown file
+    const markdownContent = `
+# ${section.details.name}
 
-    if (fs.statSync(absolutePath).isDirectory()) {
-      filelist = getCourses(absolutePath, filelist);
-    } else {
-      filelist.push(path.join(directory, file));
+## Key Takeaways
+
+- Key takeaway 1
+- Key takeaway 2
+- Key takeaway 3
+
+## Why This Is Important
+
+This section is crucial because it introduces {explain the importance of the section here}. Mastery of this concept/topic is a stepping stone to understanding {related advanced topics}.
+
+## Tips to Revisit This Section in the Future
+
+1. **Re-read key points:** Regularly reviewing the key takeaways from this section can help reinforce the material in your mind.
+2. **Practical application:** Try to apply the concepts learned in this section in your day-to-day coding tasks or side projects.
+3. **Teach others:** One of the best ways to solidify your understanding of a topic is to explain it to someone else.
+
+## Additional Notes
+
+{Any other specific notes or reminders related to the section}
+
+## Resources for Further Learning
+
+- [Resource Name](link) - A brief description of what the resource offers and why it's useful.
+- [Resource Name](link) - A brief description of what the resource offers and why it's useful.
+
+`;
+
+    // Define the path for the markdown file
+    const dirPath = path.join(
+      __dirname,
+      "docs",
+      `${course.details.slug}`
+    );
+    const filePath = path.join(dirPath, `${section.details.slug}.md`);
+
+    // Create the directory if it does not exist
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
+
+    // Write the markdown file only if it does not already exist
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, markdownContent);
     }
   });
 
-  return filelist;
-}
-
-const coursesDirectory = './programme/courses';
-const courseFiles = getCourses(coursesDirectory);
-const courses = courseFiles.map(file => require(path.join(__dirname, file)));
-
-courses.forEach(courseData => {
-  const { course, category } = courseData;
-
-  const courseContent = `---
-id: ${course.courseName.replace(' ', '-').toLowerCase()}
-title: ${course.courseName}
+  // Construct the content of the welcome.md file
+  const welcomeMdContent = 
+`---
+title: ${course.details.name}
 ---
+import CoursePage from '@site/src/components/CoursePage';
 
-# ${course.courseName}
-[Course Link](${course.courseLink})
+<CoursePage courseid="${course.id}"/>
+`;
 
-## Sections
-${course.sections.map(section => `- [${section.sectionName}](${section.sectionLink})`).join('\n')}
-  `;
-  fs.writeFileSync(path.join('./docs', `${course.courseName.replace(' ', '-').toLowerCase()}.md`), courseContent);
+  // Define the path for the welcome.md file
+  const welcomeMdPath = path.join(
+    __dirname,
+    "docs",
+    `${course.details.slug}`,
+    "welcome.mdx"
+  );
 
-  // Creating a directory for the course sections
-  const courseDirectory = path.join('./docs', `${course.courseName.replace(' ', '-').toLowerCase()}`);
-  if (!fs.existsSync(courseDirectory)) {
-    fs.mkdirSync(courseDirectory);
-  }
-
-  // Creating md file for each section
-  course.sections.forEach(section => {
-    const sectionContent = `---
-id: ${section.sectionName.replace(' ', '-').toLowerCase()}
-title: ${section.sectionName}
----
-
-# ${section.sectionName}
-[Section Link](${section.sectionLink})
-
-## Notes
-TODO: Add your notes here
-    `;
-
-    // Write the section md file into the course's directory
-    fs.writeFileSync(path.join(courseDirectory, `${section.sectionName.replace(' ', '-').toLowerCase()}.md`), sectionContent);
-  });
-
-  // Updating the sidebar
-  if (!sidebar.someSidebar['Hogwarts'][category]) {
-    sidebar.someSidebar['Hogwarts'][category] = [];
-  }
-  sidebar.someSidebar['Hogwarts'][category].push(course.courseName.replace(' ', '-').toLowerCase());
+  // Write the welcome.md file
+  fs.writeFileSync(welcomeMdPath, welcomeMdContent);
 });
-
-// Writing the sidebar structure to the file
-fs.writeFileSync('./courseSidebar.js', `module.exports = ${JSON.stringify(sidebar, null, 2)}`);
